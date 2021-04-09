@@ -308,7 +308,7 @@ int mainmenu(){
     printf("Enter 2 For Teachers\n");
     printf("Enter 3 For Staffs\n");
     printf("Enter 4 For Notice Board\n");
-    printf("Enter 5 For Changing password\n");
+    printf("Enter 5 For Signout\n");
     scanf("%d",&choice);
     printf("Press Enter to Continue");
     getch();
