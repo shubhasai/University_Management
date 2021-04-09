@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#include<conio.h>
 // # define stud struct student;
 // # define teac struct faculties;
 // # define staf struct staffs;
@@ -23,7 +24,7 @@ struct faculties
     char dept[20];
     char name[20];
     char adress[100];
-    int number;
+    char number[10];
 };
 struct staffs
 {
@@ -31,7 +32,7 @@ struct staffs
     char dept[20];
     char name[20];
     char adress[100];
-    int number;
+    char number[10];
 };
 struct notice
 {
@@ -92,6 +93,8 @@ void registration(){
     fprintf(ptr,"%s %s",ld.username,ld.password);
     fclose(ptr);
     printf("Successfully Register\n");
+    getch();
+    system("cls");
     login();
 } 
 int login(){
@@ -110,6 +113,9 @@ int login(){
     // printf("%s%s",un1,pass1);
     if(strcmp(inputpassword,pass1)==0 && strcmp(inputusername,un1) == 0){
         int cont = 1;
+        printf("Press Enter to Continue");
+        getch();
+        system("cls");
         while (cont!=0)
         {
                 printf("WELCOME\n");
@@ -227,9 +233,13 @@ int login(){
                     printf("Welcome to NoticeBoard Section:\n");
                     int chn = noticeboard();
                     if(chn==1){
-                        viewnotice(fpn);
+                        addnotice(fpn);
                     }
                     else if (chn==2)
+                    {
+                        viewnotice(fpn);
+                    }
+                    else if (chn==3)
                     {
                         editnotice(fpn);
                     }
@@ -240,7 +250,7 @@ int login(){
                     
                     break;
                 case 5:
-                    printf("/Signout\n");
+                    printf("Signout\n");
                     int c;
                     printf("Enter 0 to Confirm Exit\n");
                     scanf("%d",&c);
@@ -271,6 +281,9 @@ void loginregistrationmenu(){
     printf("Enter 1 For Registration\n");
     printf("Enter 2 For Login\n");
     scanf("%d",&ch);
+    printf("Press Enter to Continue");
+    getch();
+    system("cls");
     if (ch == 1)
     {
         registration();
@@ -281,6 +294,9 @@ void loginregistrationmenu(){
     else
     {
         printf("Wrong Input\n");
+        printf("Press Enter to Continue");
+        getch();
+        system("cls");
         loginregistrationmenu();
     }
 
@@ -294,6 +310,9 @@ int mainmenu(){
     printf("Enter 4 For Notice Board\n");
     printf("Enter 5 For Changing password\n");
     scanf("%d",&choice);
+    printf("Press Enter to Continue");
+    getch();
+    system("cls");
     return choice;
 }
 int studentmenu(){
@@ -305,6 +324,9 @@ int studentmenu(){
     printf("Enter 5 For Delete Recors\n");
     int ch;
     scanf("%d",&ch);
+    printf("Press Enter to Continue");
+    getch();
+    system("cls");
     return ch;
 }
 int facultymenu(){
@@ -316,6 +338,9 @@ int facultymenu(){
     printf("Enter 5 For Delete Recors\n");
     int ch;
     scanf("%d",&ch);
+    printf("Press Enter to Continue");
+    getch();
+    system("cls");
     return ch;
 }
 int staffmenu(){
@@ -327,6 +352,9 @@ int staffmenu(){
     printf("Enter 5 For Delete Recors\n");
     int ch;
     scanf("%d",&ch);
+    printf("Press Enter to Continue");
+    getch();
+    system("cls");
     return ch;
 }
 
@@ -356,14 +384,16 @@ void addstudent(FILE * fp)
         printf("\n\n\t\tEnter Roll number: ");
         scanf("%d",&s.id);
         fflush(stdin);
-        printf("\n\n\tEnter grade\n");
+        printf("\n\n\t\tEnter grade:");
         scanf("%f",&s.grade);
 
         fwrite(&s,sizeof(s),1,fp);
-
         printf("\n\n\t\tAdd another student?(Y/N)?");
         fflush(stdin);
         another=getchar();
+        getch();
+        printf("Press Enter to Continue");
+        system("cls");
     }
 }
 void addfaculty(FILE * fp)
@@ -392,14 +422,17 @@ void addfaculty(FILE * fp)
         printf("\n\n\t\tEnter ID: ");
         scanf("%d",&f.id);
         fflush(stdin);
-        printf("\n\n\tEnter Contact Number\n");
-        scanf("%f",&f.number);
+        printf("\n\n\t\tEnter Contact Number:");
+        fflush(stdin);
+        fgets(f.number,20,stdin);
 
         fwrite(&f,sizeof(f),1,fp);
-
         printf("\n\n\t\tAdd another faculty Record?(Y/N)?");
         fflush(stdin);
         another=getchar();
+        getch();
+        printf("Press Enter to Continue");
+        system("cls");
     }
 }
 void addstaff(FILE * fp)
@@ -428,14 +461,16 @@ void addstaff(FILE * fp)
         printf("\n\n\t\tEnter ID number: ");
         scanf("%d",&sf.id);
         fflush(stdin);
-        printf("\n\n\tEnter contact no.\n");
-        scanf("%f",&sf.number);
-
+        printf("\n\n\t\tEnter contact no.:");
+        fflush(stdin);
+        fgets(sf.number,20,stdin);
         fwrite(&sf,sizeof(sf),1,fp);
-
         printf("\n\n\t\tAdd another staff?(Y/N)?");
         fflush(stdin);
         another=getchar();
+        getch();
+        printf("Press Enter to Continue");
+        system("cls");
     }
 }
 
@@ -520,8 +555,6 @@ FILE * delfaculty(FILE * fp)
 
         fwrite(&f,siz,1,ft);
     }
-
-
     fclose(fp);
     fclose(ft);
     remove("facultydetails.txt");
@@ -591,7 +624,7 @@ void modifyfaculty(FILE * fp)
     struct faculties f;
     int i,flag=0,tempRoll,siz=sizeof(f);
 
-    printf("\n\n\tEnter Roll Number of Student to MODIFY the Record : ");
+    printf("\n\n\tEnter ID Number of Faculty to MODIFY the Record : ");
     scanf("%d",&tempRoll);
 
     rewind(fp);
@@ -609,10 +642,10 @@ void modifyfaculty(FILE * fp)
     {
         fseek(fp,-siz,SEEK_CUR);
         printf("\n\n\t\t\t\tRecord Found\n\t\t\t");
-        printf("\n\n\t\t\tStudent Name: %s",f.name);
-        printf("\n\n\t\t\tStudent Roll: %d\n\t\t\t",f.id); 
-        printf("\n\n\t\t\tEnter New Data for the student");
-        printf("\n\n\t\t\tEnter Full Name of Student: ");
+        printf("\n\n\t\t\tFaculty Name: %s",f.name);
+        printf("\n\n\t\t\tFaculty Roll: %d\n\t\t\t",f.id); 
+        printf("\n\n\t\t\tEnter New Data for the Faculty");
+        printf("\n\n\t\t\tEnter Full Name of Faculty: ");
         fflush(stdin);
         fgets(f.name,100,stdin);
         f.name[strlen(f.name)-1]='\0';
@@ -627,10 +660,11 @@ void modifyfaculty(FILE * fp)
         fgets(f.adress,20,stdin);
         f.adress[strlen(f.adress)-1]='\0';
 
-        printf("\n\n\t\t\tEnter Roll number: ");
+        printf("\n\n\t\t\tEnter ID number: ");
         scanf("%d",&f.id);
-        printf("\n\n\t\tEnter Grade\n");
-        scanf("%f",&f.number);
+        printf("\n\n\t\tEnter Contact no:\n");
+        fflush(stdin);
+        fgets(f.number,20,stdin);
         fwrite(&f,sizeof(f),1,fp);
     }
 
@@ -642,7 +676,7 @@ void modifystaff(FILE * fp)
     struct staffs sf;
     int i,flag=0,tempRoll,siz=sizeof(sf);
 
-    printf("\n\n\tEnter Roll Number of Student to MODIFY the Record : ");
+    printf("\n\n\tEnter ID Number of Staff to MODIFY the Record : ");
     scanf("%d",&tempRoll);
 
     rewind(fp);
@@ -660,14 +694,14 @@ void modifystaff(FILE * fp)
     {
         fseek(fp,-siz,SEEK_CUR);
         printf("\n\n\t\t\t\tRecord Found\n\t\t\t");
-        printf("\n\n\t\t\tStudent Name: %s",sf.name);
-        printf("\n\n\t\t\tStudent Roll: %d\n\t\t\t",sf.id);
-        printf("\n\n\t\t\tEnter New Data for the student");
-        printf("\n\n\t\t\tEnter Full Name of Student: ");
+        printf("\n\n\t\t\tStaff Name: %s",sf.name);
+        printf("\n\n\t\t\tStaff Roll: %d\n\t\t\t",sf.id);
+        printf("\n\n\t\t\tEnter New Data for the Staff");
+        printf("\n\n\t\t\tEnter Full Name of Staff: ");
         fflush(stdin);
         fgets(sf.name,100,stdin);
         sf.name[strlen(sf.name)-1]='\0';
-        printf("\n\n\t\t\tEnter Department: ");
+        printf("\n\n\t\t\tEnter Workname: ");
         fflush(stdin);
         fgets(sf.dept,50,stdin);
         sf.dept[strlen(sf.dept)-1]='\0';
@@ -676,11 +710,11 @@ void modifystaff(FILE * fp)
         fgets(sf.adress,20,stdin);
         sf.adress[strlen(sf.adress)-1]='\0';
         fflush(stdin);
-        printf("\n\n\t\t\tEnter Roll number: ");
+        printf("\n\n\t\t\tEnter ID: ");
         scanf("%d",&sf.id);
-        printf("\n\n\t\tEnter Grade\n");
+        printf("\n\n\t\tEnter ContactNo:\n");
         fflush(stdin);
-        scanf("%f",&sf.number);
+        fgets(sf.number,20,stdin);
         fwrite(&sf,sizeof(sf),1,fp);
     }
 
@@ -768,8 +802,8 @@ void displayfaculty(FILE * fp)
         printf("\n\t\tNAME : %s",f.name);
         printf("\n\n\t\tDepertment : %s",f.dept);
         printf("\n\n\t\tAdr. : %s",f.adress);
-        printf("\n\n\t\tROLL : %d",f.id);
-        printf("\n\n\tGrade: %f\n",f.number);
+        printf("\n\n\t\tID : %d",f.id);
+        printf("\n\n\tNumber: %s\n",f.number);
     }
 }
 void displaystaff(FILE * fp)
@@ -784,8 +818,8 @@ void displaystaff(FILE * fp)
         printf("\n\t\tNAME : %s",sf.name);
         printf("\n\n\t\tDepertment : %s",sf.dept);
         printf("\n\n\t\tAdr. : %s",sf.adress);
-        printf("\n\n\t\tROLL : %d",sf.id);
-        printf("\n\n\tGrade: %f\n",sf.number);
+        printf("\n\n\t\tID : %d",sf.id);
+        printf("\n\n\tNumber: %s\n",sf.number);
     }
 }
 
@@ -819,7 +853,6 @@ void Indivisualstudent(FILE *fp)
             printf("\n\n\t\tDepartment : %s",s.dept);
             printf("\n\n\t\tAdress : %s",s.adress);
             printf("\n\n\t\tROLL : %d",s.id);
-            printf("\n\n\tSGPA: ");
             printf("\n\n\t\tGrade : %.2f\n\t",s.grade);
 
         }
@@ -841,7 +874,7 @@ void Indivisualfaculty(FILE *fp)
 
     while(another=='y'||another=='Y')
     {
-        printf("\n\n\tEnter Roll Number: ");
+        printf("\n\n\tEnter ID Number: ");
         scanf("%d",&tempRoll);
 
         rewind(fp);
@@ -860,9 +893,8 @@ void Indivisualfaculty(FILE *fp)
             printf("\n\t\tNAME : %s",f.name);
             printf("\n\n\t\tDepartment : %s",f.dept);
             printf("\n\n\t\tAdress : %s",f.adress);
-            printf("\n\n\t\tROLL : %d",f.id);
-            printf("\n\n\tSGPA: ");
-            printf("\n\n\t\tNumber : %.2f\n\t",f.number);
+            printf("\n\n\t\tID : %d",f.id);
+            printf("\n\n\t\tContact Number : %s\n\t",f.number);
 
         }
         else printf("\n\n\t\t!!!! ERROR RECORD NOT FOUND !!!!");
@@ -883,7 +915,7 @@ void Indivisualstaff(FILE *fp)
 
     while(another=='y'||another=='Y')
     {
-        printf("\n\n\tEnter Roll Number: ");
+        printf("\n\n\tEnter ID Number: ");
         scanf("%d",&tempRoll);
 
         rewind(fp);
@@ -902,8 +934,8 @@ void Indivisualstaff(FILE *fp)
             printf("\n\t\tNAME : %s",sf.name);
             printf("\n\n\t\tDepartment : %s",sf.dept);
             printf("\n\n\t\tAdress : %s",sf.adress);
-            printf("\n\n\t\tROLL : %d",sf.id);
-            printf("\n\n\t\tGrade : %.2f\n\t",sf.number);
+            printf("\n\n\t\tID : %d",sf.id);
+            printf("\n\n\t\tContact Number : %s\n\t",sf.number);
 
         }
         else printf("\n\n\t\t!!!! ERROR RECORD NOT FOUND !!!!");
@@ -917,8 +949,9 @@ void Indivisualstaff(FILE *fp)
 int noticeboard(){
     int ch;
     printf("Enter Your Choice:\n");
-    printf("1. For Viewing The Notice Board Enter 1\n");
-    printf("2. For Editing The Notice Board Enter 2\n");
+    printf("1. For Adding The Notice Board Enter 1\n");
+    printf("2. For Viewing The Notice Board Enter 2\n");
+    printf("3. For Editing The Notice Board Enter 3\n");
     scanf("%d",&ch);
     return ch;
 }
@@ -929,9 +962,9 @@ void addnotice(FILE *fp){
     while(another=='y'||another=='Y')
     {
 
-        printf("\n\n\t\tEnter Full Name of Student: ");
+        printf("\n\n\t\tEnter Notice: ");
         fflush(stdin);
-        fgets(n.details,20,stdin);
+        fgets(n.details,200,stdin);
         n.details[strlen(n.details)-1]='\0';
         fflush(stdin);
         printf("\n\n\tEnter Sl. No.\n");
@@ -939,7 +972,7 @@ void addnotice(FILE *fp){
 
         fwrite(&n,sizeof(n),1,fp);
 
-        printf("\n\n\t\tAdd another student?(Y/N)?");
+        printf("\n\n\t\tAdd another Notice?(Y/N)?");
         fflush(stdin);
         another=getchar();
     }
@@ -953,8 +986,8 @@ void viewnotice(FILE *fp){
 
     while((fread(&n,siz,1,fp))==1)
     {
-        printf("\n\t\tSL.No : %s",n.slno);
         printf("\n\t\tNOTICE : %s",n.details);
+        printf("\n\t\tSL.No : %s",n.slno);
     }
 }
 void editnotice(FILE *fp){
